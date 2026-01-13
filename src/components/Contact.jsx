@@ -4,15 +4,14 @@ import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
 import { styles } from "../styles";
-import NetworkGlobe from "./networkGlobe";
+
 import { SectionWrapper } from "../hoc";
 import ElectricBorder from "./ElectricBorder";
-import { useIsMobile } from "../utils/useInMobile"; // detect mobile
+import { useIsMobile } from "../utils/useInMobile";
 
 // 💚 global accent
 const ACCENT_HEX = "#22c55e";
 
-// animations
 const formVariants = {
   hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
   show: {
@@ -23,23 +22,14 @@ const formVariants = {
   },
 };
 
-const planetVariants = {
-  hidden: { opacity: 0, scale: 0.85, y: 30 },
-  show: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 120, damping: 18, delay: 0.25 },
-  },
-};
-
 const Contact = () => {
   const isMobile = useIsMobile();
   const formRef = useRef();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,9 +41,9 @@ const Contact = () => {
         import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
         {
           from_name: form.name,
-          to_name: "JavaScript Mastery",
+          to_name: "Ambiance",
           from_email: form.email,
-          to_email: "sujata@jsmastery.pro",
+          to_email: "ambiance0100@gmail.com",
           message: form.message,
         },
         import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
@@ -72,103 +62,79 @@ const Contact = () => {
       );
   };
 
-  // Form content (reusable for mobile & desktop)
-  const FormContent = () => (
-    <>
-      <p
-        className={`${styles.sectionSubText} ${isMobile ? "text-center" : ""}`}
-        style={{ color: ACCENT_HEX }}
-      >
-        Get in touch
-      </p>
-      <h3
-        className={`${styles.sectionHeadText} ${isMobile ? "text-center" : ""}`}
-        style={{
-          color: ACCENT_HEX,
-          textShadow: `0 0 8px ${ACCENT_HEX}, 0 0 12px ${ACCENT_HEX}`, // 🌟 glow applied
-        }}
-      >
-        <span className="relative inline-block">
-          Contact
-          <span style={{ color: ACCENT_HEX }}>.</span>
-          <span
-            className="absolute left-0 -bottom-2 h-[2px] w-10 rounded-full"
-            style={{
-              background: `linear-gradient(to right, ${ACCENT_HEX}, transparent)`,
-              boxShadow: `0 0 12px ${ACCENT_HEX}`,
-            }}
-          />
-        </span>
-      </h3>
-
-      <form ref={formRef} onSubmit={handleSubmit} className="mt-10 flex flex-col gap-7">
-        <label className="flex flex-col">
-          <span
-            className={`text-[${isMobile ? "center" : "left"}] font-medium mb-2`}
-            style={{ color: ACCENT_HEX }}
-          >
-            Your Name
-          </span>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="What's your good name?"
-            className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)]"
-          />
-        </label>
-
-        <label className="flex flex-col">
-          <span
-            className={`text-[${isMobile ? "center" : "left"}] font-medium mb-2`}
-            style={{ color: ACCENT_HEX }}
-          >
-            Your Email
-          </span>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="What's your email address?"
-            className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)]"
-          />
-        </label>
-
-        <label className="flex flex-col">
-          <span
-            className={`text-[${isMobile ? "center" : "left"}] font-medium mb-2`}
-            style={{ color: ACCENT_HEX }}
-          >
-            Your Message
-          </span>
-          <textarea
-            rows={6}
-            name="message"
-            value={form.message}
-            onChange={handleChange}
-            placeholder="What would you like to talk about?"
-            className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)] resize-none"
-          />
-        </label>
-
-        <motion.button
-          type="submit"
-          whileHover={{ scale: 1.03, boxShadow: `0 0 18px ${ACCENT_HEX}` }}
-          whileTap={{ scale: 0.97 }}
-          className="mt-2 rounded-xl py-3 px-8 font-bold text-[14px] text-[#020617]"
-          style={{ background: ACCENT_HEX, boxShadow: `0 0 14px ${ACCENT_HEX}` }}
+  // ⚡ Fixed: This is now outside the main render to avoid unmounting
+  const FormContent = (
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="mt-10 flex flex-col gap-7"
+    >
+      <label className="flex flex-col">
+        <span
+          className={`${isMobile ? "text-center" : "text-left"} font-medium mb-2`}
+          style={{ color: ACCENT_HEX }}
         >
-          {loading ? "Sending..." : "Send"}
-        </motion.button>
-      </form>
-    </>
+          Your Name
+        </span>
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="What's your good name?"
+          className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)]"
+        />
+      </label>
+
+      <label className="flex flex-col">
+        <span
+          className={`${isMobile ? "text-center" : "text-left"} font-medium mb-2`}
+          style={{ color: ACCENT_HEX }}
+        >
+          Your Email
+        </span>
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="What's your email address?"
+          className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)]"
+        />
+      </label>
+
+      <label className="flex flex-col">
+        <span
+          className={`${isMobile ? "text-center" : "text-left"} font-medium mb-2`}
+          style={{ color: ACCENT_HEX }}
+        >
+          Your Message
+        </span>
+        <textarea
+          rows={6}
+          name="message"
+          value={form.message}
+          onChange={handleChange}
+          placeholder="What would you like to talk about?"
+          className="bg-[#020617] py-4 px-5 rounded-lg text-white placeholder:text-slate-500 text-[13px] border border-slate-700/60 focus:border-[rgba(34,197,94,0.8)] resize-none"
+        />
+      </label>
+
+      <motion.button
+        type="submit"
+        whileHover={{ scale: 1.03, boxShadow: `0 0 18px ${ACCENT_HEX}` }}
+        whileTap={{ scale: 0.97 }}
+        className="mt-2 rounded-xl py-3 px-8 font-bold text-[14px] text-[#020617]"
+        style={{ background: ACCENT_HEX, boxShadow: `0 0 14px ${ACCENT_HEX}` }}
+        disabled={loading}
+      >
+        {loading ? "Sending..." : "Send"}
+      </motion.button>
+    </form>
   );
 
   return (
     <div className="relative xl:mt-12">
-      {/* 🔰 big glowing wrapper */}
       <div
         className="pointer-events-none absolute inset-0 rounded-[32px] -z-10"
         style={{
@@ -182,9 +148,7 @@ const Contact = () => {
         }}
       />
 
-      {/* layout */}
       <div className="rounded-[32px] px-6 py-10 sm:px-10 sm:py-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden">
-        {/* LEFT — Form */}
         <motion.div
           variants={formVariants}
           initial="hidden"
@@ -199,7 +163,7 @@ const Contact = () => {
                 boxShadow: `0 0 22px rgba(0,0,0,0.85), 0 0 26px rgba(34,197,94,0.4)`,
               }}
             >
-              <FormContent />
+              {FormContent}
             </div>
           ) : (
             <ElectricBorder
@@ -215,7 +179,7 @@ const Contact = () => {
                   boxShadow: `0 0 22px rgba(0,0,0,0.85), 0 0 26px rgba(34,197,94,0.4)`,
                 }}
               >
-                <FormContent />
+                {FormContent}
               </div>
             </ElectricBorder>
           )}
